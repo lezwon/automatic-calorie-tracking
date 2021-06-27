@@ -1,0 +1,7 @@
+0 Wheat Chapati
+1 Soya Chunks Gravy
+2 Veg Salad
+3 Fried Chicken Breast
+4 Boiled Brown Rice
+5 Chicken Curry
+6 Aloo Paratha

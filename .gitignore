@@ -1,0 +1,5 @@
+images/
+.vscode
+__pycache__
+.env
+main.log
