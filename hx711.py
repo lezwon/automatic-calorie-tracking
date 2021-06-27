@@ -1,4 +1,4 @@
-#
+# Source: https://github.com/tatobari/hx711py
 
 import RPi.GPIO as GPIO
 import time
