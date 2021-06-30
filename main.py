@@ -1,35 +1,23 @@
 #! /usr/bin/python2
-
-import time
-import sys
-import os
-import logging
-
 import RPi.GPIO as GPIO
-from picamera import PiCamera
-from datetime import datetime
-
 from hx711 import HX711
+
+from picamera import PiCamera
+import os
+import time
+
 from classifier import Classifier
 import food_logger
 
 
-logging.basicConfig(filename="main.log", level=logging.DEBUG)
-
-IMAGES_FOLDER = "images"
 camera = PiCamera()
-classfier = Classifier(
+classifier = Classifier(
     "converted_tflite/model_unquant.tflite", "converted_tflite/labels.txt"
 )
 
+IMAGES_FOLDER = "images"
 if not os.path.exists(IMAGES_FOLDER):
     os.mkdir(IMAGES_FOLDER)
-
-
-def cleanAndExit():
-    print("Cleaning...")
-    GPIO.cleanup()
-    print("Bye!")
 
 
 def capture():
@@ -47,30 +35,23 @@ hx.reset()
 hx.tare()
 
 print("Tare done! Add weight now...")
-
-
 while True:
     try:
-        val_A = hx.get_weight(5)
+        value = hx.get_weight()
         counter = 0
-        # print(val_A)
-        # logging.info(val_A)
+        print(value)
 
-        while val_A > 10:
-            counter += 1
+        while value > 10:
             img_path = capture()
-            label = classfier.infer(img_path)
-            logging.info(f"{label} : {int(val_A)}gm")
+            label = classifier.infer(img_path)
+            print(f"{label} : {int(value)}gm")
 
-            if counter == 3 and label is not None:
-                food_logger.log(label, val_A)
+            counter += 1
+            if counter == 3:
+                food_logger.log(label, value)
 
-            print(val_A)
-            hx.power_down()
-
-            hx.power_up()
             time.sleep(0.2)
-            val_A = hx.get_weight(5)
+            value = hx.get_weight()
 
     except (KeyboardInterrupt, SystemExit):
-        cleanAndExit()
+        GPIO.cleanup()
