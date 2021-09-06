@@ -2,18 +2,14 @@
 import RPi.GPIO as GPIO
 from hx711 import HX711
 
-from picamera import PiCamera
 import os
 import time
+import requests
 
 from classifier import Classifier
 import food_logger
 
 
-camera = PiCamera()
-classifier = Classifier(
-    "converted_tflite/model_unquant.tflite", "converted_tflite/labels.txt"
-)
 
 IMAGES_FOLDER = "images"
 if not os.path.exists(IMAGES_FOLDER):
@@ -21,9 +17,11 @@ if not os.path.exists(IMAGES_FOLDER):
 
 
 def capture():
+    img =  requests.get("http://192.168.1.40/capture").content
     img_name = int(time.time())
     img_path = f"images/{img_name}.jpg"
-    camera.capture(img_path)
+    with open(img_path) as file:
+        file.write(img)
     return img_path
 
 
