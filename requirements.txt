@@ -2,3 +2,4 @@ python-dotenv
 requests
 numpy
 Pillow
+python3-rpi.gpio
