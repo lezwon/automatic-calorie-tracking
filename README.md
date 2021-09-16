@@ -2,8 +2,8 @@
 
 <img src="meta/Automated Calorie Tracking.png"/>
 
-This repository accompanies the blog post here: 
-https://techtalk.digitalpress.blog/automated-calorie-tracking. 
+This repository accompanies the tutorial on hackster here: 
+https://www.hackster.io/lezwon/automatic-calorie-tracking-scale-31d780
 
 
 This code for this repository helps capture a food image via your Pi Camera, and classify it using TFLite. 
